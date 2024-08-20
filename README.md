@@ -49,10 +49,10 @@ const maskObject = require('jsmasker')
 
 const sensitiveObject = {
   username: 'penelope',
-  password: 'secretpassword',
+  password: 'Nezuko123',
   data: {
-    key: 'sensitive-key',
-    value: 'some-value'
+    key: 'Hashira-key',
+    value: 'Hashira'
   }
 }
 
@@ -70,10 +70,10 @@ When used in a browser, JSMasker is available as a global function `JSMasker`:
 <script>
   const sensitiveObject = {
     username: 'penelope',
-    password: 'secretpassword',
+    password: 'Nezuko123',
     data: {
-      key: 'sensitive-key',
-      value: 'some-value'
+      key: 'Hashira-key',
+      value: 'Hashira'
     }
   }
 
