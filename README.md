@@ -31,7 +31,7 @@ npm install jsmasker
 You can include JSMasker directly in your HTML file using a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jsmasker@1.0.0/dist/jsmasker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsmasker@1.1.0/dist/jsmasker.min.js"></script>
 ```
 
 Or download the `jsmasker.min.js` file from the `dist` folder in this repository and include it in your project:
