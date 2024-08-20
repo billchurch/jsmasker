@@ -31,7 +31,7 @@ npm install jsmasker
 You can include JSMasker directly in your HTML file using a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jsmasker@1.1.0/dist/jsmasker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsmasker@1.1.1/dist/jsmasker.min.js"></script>
 ```
 
 Or download the `jsmasker.min.js` file from the `dist` folder in this repository and include it in your project:
@@ -48,7 +48,7 @@ Or download the `jsmasker.min.js` file from the `dist` folder in this repository
 const maskObject = require('jsmasker')
 
 const sensitiveObject = {
-  username: 'johndoe',
+  username: 'penelope',
   password: 'secretpassword',
   data: {
     key: 'sensitive-key',
@@ -69,7 +69,7 @@ When used in a browser, JSMasker is available as a global function `JSMasker`:
 <script src="https://cdn.jsdelivr.net/npm/jsmasker@1.0.0/dist/jsmasker.min.js"></script>
 <script>
   const sensitiveObject = {
-    username: 'johndoe',
+    username: 'penelope',
     password: 'secretpassword',
     data: {
       key: 'sensitive-key',

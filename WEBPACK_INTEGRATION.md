@@ -36,7 +36,7 @@ Now you can use JSMasker in your code:
 
 ```javascript
 const sensitiveData = {
-  username: 'johndoe',
+  username: 'penelope',
   password: 'secret123',
   api_key: 'abcdef123456'
 };
@@ -126,7 +126,7 @@ import maskObject from 'jsmasker';
 
 function SensitiveDataComponent() {
   const [data, setData] = useState({
-    username: 'johndoe',
+    username: 'penelope',
     password: 'secret123',
     api_key: 'abcdef123456'
   });
