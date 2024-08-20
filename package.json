@@ -1,6 +1,6 @@
 {
   "name": "jsmasker",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A flexible module to mask sensitive properties in objects with customizable options, for both Node.js and browser",
   "main": "src/index.js",
   "browser": "dist/jsmasker.min.js",
