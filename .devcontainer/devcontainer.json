@@ -1,0 +1,37 @@
+{
+  "name": "Debian Bullseye Node.js DevContainer",
+  "image": "mcr.microsoft.com/vscode/devcontainers/base:bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  // mount the ssh public identity file for the this project
+  // I limit to just what I need and not the whole ~/.ssh folder
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh/personal_id_rsa.pub,target=/home/vscode/.hostssh/id_rsa.pub,readonly,type=bind,consistency=cached"
+  ],
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+          "mechatroner.rainbow-csv",
+          "ms-vscode-remote.remote-containers",
+          "dbaeumer.vscode-eslint",
+          "GitHub.copilot",
+          "GitHub.copilot-chat",
+          "esbenp.prettier-vscode",
+          "rvest.vs-code-prettier-eslint",
+          "bierner.markdown-mermaid",
+          "stylelint.vscode-stylelint",
+          "vivaxy.vscode-conventional-commits",
+          "oderwat.indent-rainbow"
+      ]
+    }
+  },
+  "postCreateCommand": "/bin/bash ./.devcontainer/scripts/tools.sh >> ~/post-create-tools.log",
+  "remoteUser": "vscode"
+}
