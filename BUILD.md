@@ -4,7 +4,7 @@ This document outlines the steps to build and publish the JSMasker module to npm
 
 ## Prerequisites
 
-- Node.js (version 6.9.1 or higher)
+- Node.js (version 6.9.1 or higher, node 22 or higher for dev)
 - npm (comes with Node.js)
 - Git
 
@@ -92,7 +92,7 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '22'
     - run: npm ci
     - run: npm run ci
 ```

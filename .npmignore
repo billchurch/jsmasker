@@ -1,3 +1,6 @@
 test/
 .gitignore
 BUILD.md
+images/
+webpack.config.js
+webpack.config.prod.js
