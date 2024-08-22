@@ -15,7 +15,6 @@
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
     "pretest": "npm run lint",
-    "prepare": "npm run build",
     "ci": "npm run lint && npm test && npm run build"
   },
   "repository": {
@@ -54,5 +53,10 @@
     "standard-version": "^9.5.0",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4"
+  },
+  "standard-version": {
+    "scripts": {
+      "postbump": "webpack --config scripts/webpack.config.js"
+    }
   }
 }
