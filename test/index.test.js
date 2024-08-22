@@ -119,4 +119,20 @@ const maskedObj9 = maskObject(testObj9, {
 
 assert(maskedObj9.password.length >= 3 && maskedObj9.password.length <= 6)
 
+const testObj10 = {
+  action: 'keyboard-interactive',
+  responses: ['sensitive_password', 'another_sensitive_value']
+}
+
+const maskedObj10 = maskObject(testObj10, {
+  properties: ['responses']
+})
+console.log(JSON.stringify(maskedObj10))
+
+assert(Array.isArray(maskedObj10.responses))
+assert.strictEqual(maskedObj10.responses.length, 2)
+assert.strictEqual(maskedObj10.responses[0].length, 8)
+assert.strictEqual(maskedObj10.responses[1].length, 8)
+assert.strictEqual(maskedObj10.action, 'keyboard-interactive')
+
 console.log('All tests passed!')

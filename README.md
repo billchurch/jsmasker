@@ -2,17 +2,16 @@
 
 ![Bandit Mascot](images/bandit.png)
 
-JSMasker is a flexible JavaScript module that masks sensitive properties in objects by replacing them with customizable masks. It can be used in both Node.js and browser environments.
+JSMasker is a flexible JavaScript module that masks sensitive properties in objects and arrays by replacing them with customizable masks. It can be used in both Node.js and browser environments.
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Node.js Usage](#nodejs-usage)
-  - [Browser Usage](#browser-usage)
-  - [Integration Guides](#integration-guides)
+  - [Masking Objects](#masking-objects)
+  - [Masking Arrays](#masking-arrays)
+  - [Nested Structures](#nested-structures)
 - [Configuration Options](#configuration-options)
-- [Features](#features)
 - [Examples](#examples)
 - [Building and Publishing](#building-and-publishing)
 - [Contributing](#contributing)
@@ -28,63 +27,86 @@ npm install jsmasker
 
 ### Browser
 
-You can include JSMasker directly in your HTML file using a CDN:
+Include JSMasker directly in your HTML file using a CDN:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/jsmasker@1.1.2/dist/jsmasker.min.js"></script>
 ```
 
-Or download the `jsmasker.min.js` file from the `dist` folder in this repository and include it in your project:
-
-```html
-<script src="path/to/jsmasker.min.js"></script>
-```
-
 ## Usage
 
-### Node.js Usage
+### Masking Objects
 
 ```javascript
 const maskObject = require('jsmasker')
 
 const sensitiveObject = {
-  username: 'penelope',
-  password: 'Nezuko123',
+  username: 'john_doe',
+  password: 'secret123',
   data: {
-    key: 'Hashira-key',
-    value: 'Hashira'
+    apiKey: 'abcdef123456'
   }
 }
 
 const maskedObject = maskObject(sensitiveObject)
 
 console.log(maskedObject)
+// Output:
+// {
+//   username: 'john_doe',
+//   password: '********',
+//   data: {
+//     apiKey: '********'
+//   }
+// }
 ```
 
-### Browser Usage
+### Masking Arrays
 
-When used in a browser, JSMasker is available as a global function `JSMasker`:
+JSMasker can also mask elements within arrays:
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/jsmasker@1.0.0/dist/jsmasker.min.js"></script>
-<script>
-  const sensitiveObject = {
-    username: 'penelope',
-    password: 'Nezuko123',
-    data: {
-      key: 'Hashira-key',
-      value: 'Hashira'
-    }
-  }
+```javascript
+const maskObject = require('jsmasker')
 
-  const maskedObject = JSMasker(sensitiveObject)
+const sensitiveArray = ['public', 'secret123', 'private']
 
-  console.log(maskedObject)
-</script>
+const maskedArray = maskObject(sensitiveArray, {
+  properties: [''] // This will mask all elements
+})
+
+console.log(maskedArray)
+// Output: ['******', '********', '******']
 ```
-## Integration Guides
 
-- [Integrating JSMasker with Webpack](WEBPACK_INTEGRATION.md)
+### Nested Structures
+
+JSMasker handles nested objects and arrays:
+
+```javascript
+const maskObject = require('jsmasker')
+
+const complexData = {
+  user: {
+    name: 'John Doe',
+    credentials: ['user123', 'password123']
+  },
+  apiKeys: ['key1', 'key2', 'key3']
+}
+
+const maskedData = maskObject(complexData, {
+  properties: ['credentials', 'apiKeys']
+})
+
+console.log(maskedData)
+// Output:
+// {
+//   user: {
+//     name: 'John Doe',
+//     credentials: ['*******', '***********']
+//   },
+//   apiKeys: ['****', '****', '****']
+// }
+```
 
 ## Configuration Options
 
@@ -96,6 +118,36 @@ When used in a browser, JSMasker is available as a global function `JSMasker`:
 | maxLength | number | 15 | Maximum length for random mask |
 | maskChar | string | '*' | Character to use for masking |
 | fullMask | string \| boolean | false | String to use as full mask (e.g., 'REDACTED') or boolean to enable/disable full masking |
+
+## Examples
+
+1. Using random mask length:
+
+```javascript
+const masked = maskObject(sensitiveData, { maskLength: 'random', minLength: 3, maxLength: 8 })
+```
+
+2. Masking specific array elements:
+
+```javascript
+const data = {
+  publicInfo: ['John', 'Doe', '1990'],
+  privateInfo: ['SSN123456', 'CC4321']
+}
+
+const masked = maskObject(data, { properties: ['privateInfo'] })
+// Result:
+// {
+//   publicInfo: ['John', 'Doe', '1990'],
+//   privateInfo: ['********', '********']
+// }
+```
+
+3. Using a full mask string:
+
+```javascript
+const masked = maskObject(sensitiveData, { fullMask: 'REDACTED' })
+```
 
 ## Features
 

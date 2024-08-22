@@ -54,19 +54,19 @@
   }
 
   /**
-   * Masks sensitive properties in an object.
+   * Masks sensitive properties in an object or array.
    *
-   * @param {Object} obj - The object to be masked.
+   * @param {Object|Array} data - The object or array to be masked.
    * @param {Object} [config] - The configuration options.
    * @param {string[]} [config.properties=['password', 'key', 'secret', 'token']] - The properties to be masked.
    * @param {number} [config.maskLength=8] - The length of the generated mask.
    * @param {number} [config.minLength=5] - The minimum length of the generated mask.
    * @param {number} [config.maxLength=15] - The maximum length of the generated mask.
    * @param {string} [config.maskChar='*'] - The character used for masking.
-   * @param {boolean} [config.fullMask=false] - Whether to use a full mask for all properties.
-   * @returns {Object} - The masked object.
+   * @param {boolean|string} [config.fullMask=false] - Whether to use a full mask for all properties.
+   * @returns {Object|Array} - The masked object or array.
    */
-  function maskObject(obj, config = {}) {
+  function maskObject(data, config = {}) {
     const {
       properties = ['password', 'key', 'secret', 'token'],
       maskLength = 8,
@@ -76,32 +76,53 @@
       fullMask = false
     } = config
 
-    // Ensure the input is an object
-    if (obj && typeof obj === 'object') {
-      // eslint-disable-next-line prefer-object-spread
-      const copy = Array.isArray(obj) ? [] : Object.assign({}, obj)
+    function maskValue(value) {
+      if (typeof fullMask === 'string') {
+        return fullMask
+      }
+      if (fullMask === true) {
+        return maskChar.repeat(value.length)
+      }
+      return generateMask(maskLength, minLength, maxLength, maskChar)
+    }
 
-      Object.keys(copy).forEach((key) => {
-        const value = copy[key]
-        if (properties.includes(key) && typeof value === 'string') {
-          if (typeof fullMask === 'string') {
-            copy[key] = fullMask
-          } else if (fullMask === true) {
-            copy[key] = maskChar.repeat(value.length)
-          } else {
-            // Default behavior: use fixed or random length mask
-            copy[key] = generateMask(maskLength, minLength, maxLength, maskChar)
-          }
-        } else if (typeof value === 'object') {
-          copy[key] = maskObject(value, config)
-        }
+    function processItem(item, isTargetProperty) {
+      if (Array.isArray(item)) {
+        return item.map(function (element) {
+          return processItem(element, isTargetProperty)
+        })
+      }
+      if (item && typeof item === 'object') {
+        return maskObject(item, {
+          properties: isTargetProperty ? [''] : properties,
+          maskLength: config.maskLength,
+          minLength: config.minLength,
+          maxLength: config.maxLength,
+          maskChar: config.maskChar,
+          fullMask: config.fullMask
+        })
+      }
+      if (isTargetProperty && typeof item === 'string') {
+        return maskValue(item)
+      }
+      return item
+    }
+
+    if (Array.isArray(data)) {
+      return data.map(function (item) {
+        return processItem(item, false)
       })
+    }
 
+    if (data && typeof data === 'object') {
+      const copy = {}
+      Object.keys(data).forEach(function (key) {
+        copy[key] = processItem(data[key], properties.indexOf(key) !== -1)
+      })
       return copy
     }
 
-    // If obj is not an object, return it unchanged
-    return obj
+    return data
   }
 
   return maskObject
