@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/billchurch/webssh2_client/compare/v1.2.0...v1.3.0) (2024-11-29)
+
+
+### Features
+
+* add privatekey as a default property ([be53dd3](https://github.com/billchurch/webssh2_client/commit/be53dd3c9cd3d09337e1aec3765ad04111fc95ea))
+
 ## [1.2.0](https://github.com/billchurch/webssh2_client/compare/v1.1.2...v1.2.0) (2024-08-22)
 
 
