@@ -68,7 +68,14 @@
    */
   function maskObject(data, config = {}) {
     const {
-      properties = ['password', 'key', 'secret', 'token', 'privatekey'],
+      properties = [
+        'password',
+        'key',
+        'secret',
+        'token',
+        'privatekey',
+        'passphrase'
+      ],
       maskLength = 8,
       minLength = 5,
       maxLength = 15,
