@@ -2,34 +2,24 @@ const { execSync } = require('child_process')
 const path = require('path')
 const fs = require('fs')
 
-// Get next version using conventional-recommended-bump
+// Get next version using standard-version dry run
 const getNextVersion = () => {
-  const pkg = require('../package.json')
-  const currentVersion = pkg.version
-  const recommendedBump = execSync(
-    'npx conventional-recommended-bump --preset angular'
-  )
-    .toString()
-    .trim()
-
-  const [major, minor, patch] = currentVersion.split('.')
-  switch (recommendedBump) {
-    case 'major':
-      return `${Number(major) + 1}.0.0`
-    case 'minor':
-      return `${major}.${Number(minor) + 1}.0`
-    default:
-      return `${major}.${minor}.${Number(patch) + 1}`
-  }
+  const output = execSync('standard-version --dry-run').toString()
+  const versionLine = output.split('\n').find(line => line.includes('bumping version'))
+  const version = versionLine.split(' ').pop()
+  return version
 }
 
 const nextVersion = getNextVersion()
 
 // Build webpack with new version to update README
-execSync('webpack --config scripts/webpack.config.js', {
+execSync('webpack --config scripts/webpack.config.js', { 
   env: { ...process.env, NEXT_VERSION: nextVersion }
 })
 
-// Run standard-version for real
+// Stage README.md
+execSync('git add README.md')
+
+// Run standard-version with README.md included
 const args = process.argv.includes('--first-release') ? '--first-release' : ''
-execSync(`npx standard-version ${args} -a -s`, { stdio: 'inherit' })
+execSync(`standard-version ${args} -a -s --files README.md`, { stdio: 'inherit' })
