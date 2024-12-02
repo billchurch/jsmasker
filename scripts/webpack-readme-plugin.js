@@ -5,7 +5,10 @@ const path = require('path')
 class WebpackReadmePlugin {
   apply(compiler) {
     compiler.hooks.done.tap('WebpackReadmePlugin', () => {
-      const { version } = require('../package.json')
+      const version =
+        process.env.NEXT_VERSION || require('../package.json').version
+
+      // Use this version when updating the README CDN link
       const readmePath = path.resolve(__dirname, '../README.md')
 
       let readme = fs.readFileSync(readmePath, 'utf8')

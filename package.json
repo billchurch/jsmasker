@@ -8,8 +8,8 @@
     "test": "node test/index.test.js",
     "build": "webpack --config scripts/webpack.config.js",
     "prepublishOnly": "npm run build",
-    "release:first": "standard-version --first-release -a -s",
-    "release": "standard-version -a -s",
+    "release": "node scripts/release.js",
+    "release:first": "node scripts/release.js --first-release",
     "lint": "eslint src test",
     "lint:fix": "eslint src test --fix",
     "clean": "rimraf dist",
@@ -53,10 +53,5 @@
     "standard-version": "^9.5.0",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4"
-  },
-  "standard-version": {
-    "scripts": {
-      "postbump": "webpack --config scripts/webpack.config.js"
-    }
   }
 }
