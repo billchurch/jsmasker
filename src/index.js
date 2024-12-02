@@ -54,6 +54,17 @@
   }
 
   /**
+   * Normalizes a property name by converting to lowercase and removing special characters
+   *
+   * @param {string} prop - The property name to normalize
+   * @returns {string} - The normalized property name
+   */
+  function normalizePropertyName(prop) {
+    if (typeof prop !== 'string') return prop
+    return prop.toLowerCase().replace(/[^a-z0-9]/g, '')
+  }
+
+  /**
    * Masks sensitive properties in an object or array.
    *
    * @param {Object|Array} data - The object or array to be masked.
@@ -83,10 +94,8 @@
       fullMask = false
     } = config
 
-    // Convert properties to lowercase for case-insensitive comparison
-    const normalizedProperties = properties.map((prop) =>
-      typeof prop === 'string' ? prop.toLowerCase() : prop
-    )
+    // Convert properties to normalized form for comparison
+    const normalizedProperties = properties.map(normalizePropertyName)
 
     function maskValue(value) {
       if (typeof fullMask === 'string') {
@@ -129,9 +138,9 @@
     if (data && typeof data === 'object') {
       const copy = {}
       Object.keys(data).forEach(function (key) {
-        // Check if the lowercase key matches any normalized property
-        const shouldMask =
-          normalizedProperties.indexOf(key.toLowerCase()) !== -1
+        // Normalize the key for comparison
+        const normalizedKey = normalizePropertyName(key)
+        const shouldMask = normalizedProperties.indexOf(normalizedKey) !== -1
         copy[key] = processItem(data[key], shouldMask)
       })
       return copy

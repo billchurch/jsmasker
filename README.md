@@ -9,6 +9,7 @@ JSMasker is a flexible JavaScript module that masks sensitive properties in obje
 - [Installation](#installation)
 - [Usage](#usage)
   - [Masking Objects](#masking-objects)
+  - [Case-Insensitive Matching](#case-insensitive-matching)
   - [Masking Arrays](#masking-arrays)
   - [Nested Structures](#nested-structures)
 - [Configuration Options](#configuration-options)
@@ -59,6 +60,52 @@ console.log(maskedObject)
 //     apiKey: '********'
 //   }
 // }
+```
+
+### Case-Insensitive Matching
+
+JSMasker performs case-insensitive property matching and normalizes property names by removing special characters. This means properties will be masked regardless of their case or format. For example:
+
+```javascript
+const sensitiveData = {
+  // All of these will be masked as they match 'password'
+  password: 'secret1',
+  Password: 'secret2',
+  PASSWORD: 'secret3',
+  pass_word: 'secret4',
+  'pass-word': 'secret5',
+
+  // All of these will be masked as they match 'apikey'
+  apiKey: 'key1',
+  API_KEY: 'key2',
+  'api-key': 'key3',
+  ApiKey: 'key4'
+}
+
+const maskedData = maskObject(sensitiveData)
+// All matching properties will be masked regardless of case/format
+```
+
+Default properties that are automatically masked (case-insensitive):
+- password
+- key
+- secret
+- token
+- privatekey
+- passphrase
+
+You can specify custom properties to mask, which will also be matched case-insensitively:
+
+```javascript
+const data = {
+  ACCESS_TOKEN: 'abc123',
+  accessToken: 'def456',
+  access_token: 'ghi789'
+}
+
+const masked = maskObject(data, {
+  properties: ['access_token']  // will match all variations
+})
 ```
 
 ### Masking Arrays
