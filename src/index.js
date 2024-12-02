@@ -83,6 +83,11 @@
       fullMask = false
     } = config
 
+    // Convert properties to lowercase for case-insensitive comparison
+    const normalizedProperties = properties.map((prop) =>
+      typeof prop === 'string' ? prop.toLowerCase() : prop
+    )
+
     function maskValue(value) {
       if (typeof fullMask === 'string') {
         return fullMask
@@ -124,7 +129,10 @@
     if (data && typeof data === 'object') {
       const copy = {}
       Object.keys(data).forEach(function (key) {
-        copy[key] = processItem(data[key], properties.indexOf(key) !== -1)
+        // Check if the lowercase key matches any normalized property
+        const shouldMask =
+          normalizedProperties.indexOf(key.toLowerCase()) !== -1
+        copy[key] = processItem(data[key], shouldMask)
       })
       return copy
     }
