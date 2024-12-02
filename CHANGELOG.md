@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/billchurch/webssh2_client/compare/v1.3.0...v1.4.0) (2024-12-02)
+
+
+### Features
+
+* add `passphrase` as a default masked property ([499291d](https://github.com/billchurch/webssh2_client/commit/499291d99307b8d9ad3f68082a04e6aaf9bc5f14))
+* Case-insensitive property matching for sensitive data masking [#1](https://github.com/billchurch/jsmasker/issues/1) ([67526ff](https://github.com/billchurch/webssh2_client/commit/67526fffbef08bb339f53149f3f78a6748b5ba7a))
+* properties are now case insensitive ([8adb7e1](https://github.com/billchurch/webssh2_client/commit/8adb7e152cd02b50f92b674f60c8161ef71647a1))
+
 ## [1.3.0](https://github.com/billchurch/webssh2_client/compare/v1.2.0...v1.3.0) (2024-11-29)
 
 
