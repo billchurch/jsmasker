@@ -10,10 +10,8 @@
     if (typeof window !== 'undefined') return window
     if (typeof global !== 'undefined') return global
     if (typeof self !== 'undefined') return self
-    // eslint-disable-next-line no-new-func
-    return Function('return this')() // Fallback
+    return {}
   }
-
   const root = getGlobalObject()
 
   if (typeof define === 'function' && define.amd) {
