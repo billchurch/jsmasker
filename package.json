@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "browser": "dist/jsmasker.min.js",
   "scripts": {
-    "test": "node test/index.test.js",
+    "test": "node --test",
     "build": "webpack --config scripts/webpack.config.js",
     "prepublishOnly": "npm run build",
     "lint": "eslint src test",
