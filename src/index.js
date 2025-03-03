@@ -77,7 +77,7 @@
    * @param {boolean|string} [config.fullMask=false] - Whether to use a full mask for all properties.
    * @returns {Object|Array} - The masked object or array.
    */
-  function maskObject(data, config = {}) {
+  function maskObject(data, config = {}, seen = new WeakMap()) {
     const {
       properties = [
         'password',
@@ -87,6 +87,7 @@
         'privatekey',
         'passphrase'
       ],
+      propertyMatcher = null,
       maskLength = 8,
       minLength = 5,
       maxLength = 15,
@@ -94,7 +95,10 @@
       fullMask = false
     } = config
 
-    // Convert properties to normalized form for comparison
+    if (seen.has(data)) {
+      return seen.get(data)
+    }
+
     const normalizedProperties = properties.map(normalizePropertyName)
 
     function maskValue(value) {
@@ -107,47 +111,78 @@
       return generateMask(maskLength, minLength, maxLength, maskChar)
     }
 
-    function processItem(item, isTargetProperty) {
+    function shouldMaskProperty(key, value, path = []) {
+      const normalizedKey = normalizePropertyName(key)
+
+      if (propertyMatcher && typeof propertyMatcher === 'function') {
+        return propertyMatcher(key, normalizedKey, value, path)
+      }
+
+      return normalizedProperties.indexOf(normalizedKey) !== -1
+    }
+
+    function processItem(item, isTargetProperty, path = []) {
+      if (item == null) {
+        return item
+      }
+
+      if (typeof item === 'object' && seen.has(item)) {
+        return seen.get(item)
+      }
+
+      let result
       if (Array.isArray(item)) {
-        return item.map(function (element) {
-          return processItem(element, isTargetProperty)
-        })
+        result = []
+        seen.set(item, result)
+
+        for (let i = 0; i < item.length; i += 1) {
+          const newPath = [...path, i]
+          result[i] = processItem(item[i], isTargetProperty, newPath)
+        }
+      } else if (typeof item === 'object') {
+        result = {}
+        seen.set(item, result)
+
+        const keys = Object.keys(item)
+        for (let i = 0; i < keys.length; i += 1) {
+          const key = keys[i]
+          const newPath = [...path, key]
+          const shouldMask =
+            isTargetProperty || shouldMaskProperty(key, item[key], newPath)
+          result[key] = processItem(item[key], shouldMask, newPath)
+        }
+      } else if (isTargetProperty && typeof item === 'string') {
+        result = maskValue(item)
+      } else {
+        result = item
       }
-      if (item && typeof item === 'object') {
-        return maskObject(item, {
-          properties: isTargetProperty ? [''] : properties,
-          maskLength: config.maskLength,
-          minLength: config.minLength,
-          maxLength: config.maxLength,
-          maskChar: config.maskChar,
-          fullMask: config.fullMask
-        })
-      }
-      if (isTargetProperty && typeof item === 'string') {
-        return maskValue(item)
-      }
-      return item
+
+      return result
     }
 
+    let result
     if (Array.isArray(data)) {
-      return data.map(function (item) {
-        return processItem(item, false)
-      })
+      result = []
+      seen.set(data, result)
+
+      for (let i = 0; i < data.length; i += 1) {
+        result[i] = processItem(data[i], false, [i])
+      }
+    } else if (data && typeof data === 'object') {
+      result = {}
+      seen.set(data, result)
+
+      const keys = Object.keys(data)
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i]
+        const shouldMask = shouldMaskProperty(key, data[key], [key])
+        result[key] = processItem(data[key], shouldMask, [key])
+      }
+    } else {
+      result = data
     }
 
-    if (data && typeof data === 'object') {
-      const copy = {}
-      Object.keys(data).forEach(function (key) {
-        // Normalize the key for comparison
-        const normalizedKey = normalizePropertyName(key)
-        const shouldMask = normalizedProperties.indexOf(normalizedKey) !== -1
-        copy[key] = processItem(data[key], shouldMask)
-      })
-      return copy
-    }
-
-    return data
+    return result
   }
-
   return maskObject
 })

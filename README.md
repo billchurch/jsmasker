@@ -213,6 +213,78 @@ The `fullMask` option can be used in two ways:
 
 If JSMasker receives a non-object input (such as a string, number, or null), it will return the input unchanged. This ensures that the function can be safely used even when the input type is uncertain.
 
+### Custom Property Matching
+
+While property lists work well for simple cases, sometimes you need more complex matching logic. JSMasker supports a custom property matcher function that gives you complete control over which properties should be masked:
+
+```javascript
+const sensitiveData = {
+  user: {
+    name: 'John Smith',
+    ssn: '123-45-6789',
+    creditCard: '4111111111111111',
+    address: {
+      street: '123 Main St',
+      personal: {
+        birthdate: '01/01/1980'
+      }
+    }
+  }
+};
+
+const masked = maskObject(sensitiveData, {
+  propertyMatcher: (key, normalizedKey, value, path) => {
+    // Mask properties with specific names
+    if (['ssn', 'creditcard'].includes(normalizedKey)) return true;
+    
+    // Mask values that look like credit card numbers
+    if (typeof value === 'string' && value.match(/^\d{16}$/)) return true;
+    
+    // Mask any property inside a 'personal' object
+    if (path.some(p => normalizePropertyName(p) === 'personal')) return true;
+    
+    // Don't mask anything else
+    return false;
+  }
+});
+
+console.log(masked);
+// Output:
+// {
+//   user: {
+//     name: 'John Smith',
+//     ssn: '********',
+//     creditCard: '********',
+//     address: {
+//       street: '123 Main St',
+//       personal: {
+//         birthdate: '********'
+//       }
+//     }
+//   }
+// }
+```
+
+The property matcher function receives four arguments:
+- `key`: The original property key
+- `normalizedKey`: The normalized property key (lowercase with special characters removed)
+- `value`: The property value
+- `path`: An array representing the path to the current property
+
+#### When to use Property Lists vs. Custom Matcher Functions
+
+**Use property lists when:**
+- You have a set of well-defined field names to mask
+- Your masking requirements are simple and name-based
+- You want the simplest configuration possible
+
+**Use custom matcher functions when:**
+- You need to mask based on property values, not just names
+- You want to use regular expressions for property matching
+- Your masking logic depends on the property's location (path) in the object
+- You need conditional logic that can't be expressed with just property names
+- You want to implement dynamic or context-aware masking rules
+
 ## Examples
 
 1. Using random mask length:
@@ -250,3 +322,4 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
