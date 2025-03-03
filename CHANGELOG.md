@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/billchurch/jsmasker/compare/v1.5.0...v1.6.0) (2025-03-03)
+
+
+### Features
+
+* add custom property matching and circular reference handling ([887b9c9](https://github.com/billchurch/jsmasker/commit/887b9c9af6f74c8afb91179c61dd6a5906caf2ef))
+
+
+### Bug Fixes
+
+* handle environments without global scope ([ee2bd06](https://github.com/billchurch/jsmasker/commit/ee2bd06c18a3dd9e48e09bcd25b7b1f9edb7b2d5))
+* update dependencies in package-lock.json ([1d3b1a3](https://github.com/billchurch/jsmasker/commit/1d3b1a3f627192df8a762cabd861e2fd38f5ef79))
+
 ## [1.5.0](https://github.com/billchurch/jsmasker/compare/v1.4.0...v1.5.0) (2025-03-03)
 
 
