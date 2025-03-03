@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/billchurch/jsmasker/compare/v1.4.0...v1.5.0) (2025-03-03)
+
+
+### Features
+
+* new build system ([06fcb3a](https://github.com/billchurch/jsmasker/commit/06fcb3ab82f68a4191732fcdd87f7e772870a0cb))
+
 ## [1.4.0](https://github.com/billchurch/webssh2_client/compare/v1.3.0...v1.4.0) (2024-12-02)
 
 
