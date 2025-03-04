@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/billchurch/jsmasker/compare/v1.6.0...v1.7.0) (2025-03-04)
+
+
+### Features
+
+* migrate to release-please and update build process ([96cfd94](https://github.com/billchurch/jsmasker/commit/96cfd945c4c1811fb8734a5d3ca7393f171b1d95))
+
+
+### Bug Fixes
+
+* update test script in package.json ([ec97bf0](https://github.com/billchurch/jsmasker/commit/ec97bf03f06203e6cf28abba0c7b89f8f57adb2a))
+
 ## [1.6.0](https://github.com/billchurch/jsmasker/compare/v1.5.0...v1.6.0) (2025-03-03)
 
 
