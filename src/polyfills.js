@@ -1,11 +1,3 @@
-/* eslint-disable node/no-unsupported-features/es-builtins */
-/* eslint-disable no-extend-native */
-/* eslint-disable vars-on-top */
-/* eslint-disable no-var */
-/* eslint-disable no-bitwise */
-/* eslint-disable no-restricted-globals */
-/* eslint-disable no-plusplus */
-
 ;(function applyPolyfills() {
   // Only polyfill Object.entries if it doesn't exist
   if (!Object.entries) {

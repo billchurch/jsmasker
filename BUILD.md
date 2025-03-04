@@ -1,100 +1,81 @@
 # Building and Publishing JSMasker
 
-This document outlines the steps to build and publish the JSMasker module to npm, including the browser-compatible version.
+This document outlines how JSMasker is built and published to npm, including the browser-compatible version.
 
 ## Prerequisites
 
-- Node.js (version 6.9.1 or higher, node 22 or higher for dev)
+- Node.js (version 18.0.0 or higher, Node 20 recommended for development)
 - npm (comes with Node.js)
 - Git
 
-## Building
+## Local Development
 
 1. Clone the repository:
-   ```
+   ```bash
    git clone https://github.com/billchurch/jsmasker.git
    cd jsmasker
    ```
 
 2. Install dependencies:
-   ```
+   ```bash
    npm install
    ```
 
 3. Run the CI script (lints, tests, and builds):
-   ```
+   ```bash
    npm run ci
    ```
 
    This will lint the code, run tests, and create a `dist` folder containing `jsmasker.min.js`, which is the browser-compatible version of the module.
 
-## Releasing a New Version
+## Automated Release Process
 
-We use `standard-version` to manage versioning and CHANGELOG generation based on conventional commits.
+JSMasker uses [release-please](https://github.com/googleapis/release-please) to automate the versioning, changelog generation, and release process.
 
-1. Make sure all your changes are committed.
+### How It Works
 
-2. Run the release script:
-   ```
-   npm run release
-   ```
+1. **Conventional Commits**: All commits should follow the [Conventional Commits](https://www.conventionalcommits.org/) specification. Common prefixes include:
+   - `feat:` - A new feature (triggers a minor version bump)
+   - `fix:` - A bug fix (triggers a patch version bump)
+   - `docs:` - Documentation changes only
+   - `chore:` - Maintenance tasks
+   - `BREAKING CHANGE:` - Breaking changes (triggers a major version bump)
 
-   This will:
-   - Bump the version in package.json
-   - Update the CHANGELOG.md
-   - Create a new commit with these changes
-   - Create a new tag with the new version number
+2. **Automated Release Pull Requests**:
+   - When commits are pushed to the main branch, release-please analyzes commit messages
+   - It automatically creates or updates a release PR that:
+     - Bumps the version in package.json
+     - Updates CHANGELOG.md
+     - Updates any version references in documentation
 
-3. Push the changes and tags:
-   ```
-   git push --follow-tags origin main
-   ```
+3. **Publishing Process**:
+   - When the release PR is merged, release-please automatically:
+     - Creates a GitHub release
+     - Tags the commit with the new version
+   - The GitHub Actions workflow then:
+     - Checks out the code
+     - Sets up Node.js
+     - Installs dependencies
+     - Runs tests
+     - Builds the package
+     - Publishes to npm
 
-## Publishing to npm
+## Manual Releases (if needed)
 
-1. Make sure you're logged in to npm:
-   ```
-   npm login
-   ```
+In most cases, releases will be handled automatically. However, if you need to perform a manual build:
 
-2. Publish the package:
-   ```
-   npm publish
-   ```
+```bash
+npm run build
+```
 
-   This will automatically run the `prepublishOnly` script, which builds the browser-compatible version before publishing.
-
-Remember to follow [semantic versioning](https://semver.org/) principles when making changes to the package.
-
-## Automated processes
-
-- The CDN link in the README.md file is automatically updated during the build process to reflect the current version number.
-- Linting is automatically run before tests.
-- The `dist` folder is cleaned before each build.
-- The `prepare` script ensures the package is built before it's packed for publishing.
+This will create the browser-compatible version in the `dist` directory.
 
 ## CI/CD
 
-The `ci` script in package.json (`npm run ci`) runs linting, testing, and building in sequence. This can be used in your CI/CD pipeline to ensure all checks pass before deployment.
+The GitHub Actions workflow in `.github/workflows/release-please.yaml` handles:
 
-For example, in a GitHub Actions workflow:
+1. Running release-please to manage version bumps and changelog updates
+2. Testing and building the code when a release is created
+3. Publishing to npm when a release is created
 
-```yaml
-name: CI
-
-on: [push, pull_request]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '22'
-    - run: npm ci
-    - run: npm run ci
-```
-
-This workflow will run on every push and pull request, ensuring that the code lints, tests pass, and builds successfully.
+This automated process ensures consistent releases with proper versioning, changelogs, and build artifacts.

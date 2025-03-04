@@ -11,5 +11,4 @@ module.exports = {
     globalObject: 'this'
   },
   mode: 'production',
-  plugins: [new WebpackReadmePlugin()]
 }

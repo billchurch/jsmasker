@@ -4,6 +4,7 @@
   "description": "A flexible module to mask sensitive properties in objects with customizable options, for both Node.js and browser",
   "main": "src/index.js",
   "browser": "dist/jsmasker.min.js",
+  "type": "module",
   "scripts": {
     "test": "node --test",
     "build": "webpack --config scripts/webpack.config.js",
@@ -12,8 +13,8 @@
     "lint:fix": "eslint src test --fix",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "pretest": "npm run lint",
-    "ci": "npm run lint && npm test && npm run build"
+    "pretest": "npm run lint:fix",
+    "ci": "npm run test && npm run build"
   },
   "repository": {
     "type": "git",
@@ -38,16 +39,17 @@
   },
   "homepage": "https://github.com/billchurch/jsmasker#readme",
   "engines": {
-    "node": ">=6.9.1"
+    "node": ">=18.0.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.0",
+    "@eslint/js": "^9.21.0",
     "conventional-changelog-cli": "^5.0.0",
-    "eslint-config-airbnb": "^19.0.4",
+    "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.2",
-    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-n": "^17.16.1",
     "eslint-plugin-prettier": "^5.2.3",
     "prettier": "^3.5.3",
-    "rimraf": "^6.0.1",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1"
   }

@@ -31,9 +31,11 @@ npm install jsmasker
 Include JSMasker directly in your HTML file using a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jsmasker@1.4.0/dist/jsmasker.min.js"></script>
+<!-- For latest version -->
+<script src="https://cdn.jsdelivr.net/npm/jsmasker@latest/dist/jsmasker.min.js"></script>
+<!-- Or for a specific version -->
+<script src="https://cdn.jsdelivr.net/npm/jsmasker@x.y.z/dist/jsmasker.min.js"></script>
 ```
-
 ## Usage
 
 ### Masking Objects
@@ -313,8 +315,36 @@ const masked = JSMasker(sensitiveObject, { fullMask: true })
 
 ## Building and Publishing
 
-For detailed instructions on building and publishing JSMasker, please refer to the [BUILD.md](BUILD.md) file.
+JSMasker now uses [release-please](https://github.com/googleapis/release-please) to automate the release process. This replaces our previous manual process that used standard-version.
 
+### How It Works
+
+1. **Conventional Commits**: We continue to use [Conventional Commits](https://www.conventionalcommits.org/) for all commit messages. These structured commit messages allow release-please to automatically determine version bumps and generate changelogs.
+
+2. **Automated Release PRs**: When commits are pushed to the main branch, release-please automatically creates or updates a release PR that:
+   - Bumps the version in package.json
+   - Updates the CHANGELOG.md
+   - Updates any version references in documentation
+
+3. **Publishing Process**:
+   - When the release PR is merged, release-please automatically creates a GitHub release and tags the commit
+   - Our GitHub Actions workflow then automatically publishes the package to npm
+
+### Benefits of the New Process
+
+- Fully automated versioning based on commit history
+- Consistent changelog generation
+- Reduced manual steps and potential for human error
+- Streamlined release workflow
+
+For local development and building, you can still use:
+
+```bash
+npm install   # Install dependencies
+npm run ci    # Run linting, tests, and build
+```
+
+For detailed information on our development workflow, please refer to the [BUILD.md](BUILD.md) file.
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.

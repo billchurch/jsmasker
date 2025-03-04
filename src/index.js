@@ -1,33 +1,5 @@
-/* eslint-disable no-undef, no-restricted-globals */
-/* eslint-disable node/no-unsupported-features/es-builtins, node/no-unsupported-features/es-syntax */
-
-;(function (factory) {
-  /* global define */
-
-  // Detect the global object
-  const getGlobalObject = function () {
-    if (typeof globalThis !== 'undefined') return globalThis
-    if (typeof window !== 'undefined') return window
-    if (typeof global !== 'undefined') return global
-    if (typeof self !== 'undefined') return self
-    return {}
-  }
-  const root = getGlobalObject()
-
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define(['./polyfills'], factory)
-  } else if (typeof module === 'object' && module.exports) {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    // eslint-disable-next-line global-require
-    module.exports = factory(require('./polyfills'))
-  } else {
-    // Browser globals (root is window)
-    root.JSMasker = factory(root)
-  }
-})(function (polyfills) {
+// The main maskObject function implementation
+function createMaskObject(polyfills) {
   // Apply polyfills
   if (polyfills && polyfills.applyPolyfills) {
     polyfills.applyPolyfills()
@@ -182,5 +154,38 @@
 
     return result
   }
+
   return maskObject
-})
+}
+
+// UMD wrapper
+;(function (factory) {
+  /* global define */
+
+  // Detect the global object
+  const getGlobalObject = function () {
+    if (typeof globalThis !== 'undefined') return globalThis
+    if (typeof window !== 'undefined') return window
+    if (typeof global !== 'undefined') return global
+    if (typeof self !== 'undefined') return self
+    return {}
+  }
+  const root = getGlobalObject()
+
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['./polyfills'], factory)
+  } else if (typeof module === 'object' && module.exports) {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+
+    module.exports = factory(require('./polyfills'))
+  } else {
+    // Browser globals (root is window)
+    root.JSMasker = factory(root)
+  }
+})(createMaskObject)
+
+// ES Module export
+export default createMaskObject(typeof window !== 'undefined' ? window : null)

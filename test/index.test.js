@@ -1,10 +1,7 @@
-/* eslint-disable strict */
-
 'use strict'
 
-const assert = require('assert')
-const maskObject = require('../src/index')
-
+import assert from 'assert'
+import maskObject from '../src/index.js' // Note the explicit .js extension
 // Test case 1: Basic functionality
 const testObj1 = {
   username: 'penelope',
