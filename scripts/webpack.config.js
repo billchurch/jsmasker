@@ -1,7 +1,10 @@
-const path = require('path')
-const WebpackReadmePlugin = require('./webpack-readme-plugin')
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+export default {
   entry: path.resolve(__dirname, '../src/index.js'),
   output: {
     filename: 'jsmasker.min.js',

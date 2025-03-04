@@ -11,7 +11,7 @@
     "prepublishOnly": "npm run build",
     "lint": "eslint src test",
     "lint:fix": "eslint src test --fix",
-    "clean": "rimraf dist",
+    "clean": "rm -f dist/jsmasker.min.js",
     "prebuild": "npm run clean",
     "pretest": "npm run lint:fix",
     "ci": "npm run test && npm run build"
