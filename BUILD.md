@@ -1,6 +1,6 @@
 # Building and Publishing JSMasker
 
-This document outlines how JSMasker is built and published to npm, including the browser-compatible version.
+This document outlines how JSMasker is built and published to npm using Vite (library mode) and TypeScript declaration output.
 
 ## Prerequisites
 
@@ -26,7 +26,11 @@ This document outlines how JSMasker is built and published to npm, including the
    npm run ci
    ```
 
-   This will lint the code, run tests, and create a `dist` folder containing `jsmasker.min.js`, which is the browser-compatible version of the module.
+   This will lint the code, run tests, and create a `dist` folder containing:
+   - `index.esm.js` (ESM entry for bundlers)
+   - `index.cjs` (CommonJS entry for Node require)
+   - `jsmasker.umd.min.js` (UMD for direct `<script>` usage; global `JSMasker`)
+   - `index.d.ts` (TypeScript declarations)
 
 ## Automated Release Process
 
@@ -68,7 +72,7 @@ In most cases, releases will be handled automatically. However, if you need to p
 npm run build
 ```
 
-This will create the browser-compatible version in the `dist` directory.
+This builds all formats and emits TypeScript declarations to `dist/index.d.ts`.
 
 ## CI/CD
 

@@ -1,10 +1,5 @@
 # JSMasker
 
-[![npm version](https://img.shields.io/npm/v/jsmasker.svg)](https://www.npmjs.com/package/jsmasker)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/jsmasker)](https://bundlephobia.com/package/jsmasker)
-[![types](https://img.shields.io/badge/types-included-brightgreen.svg)](#typescript)
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-
 ![Bandit Mascot](images/bandit.png)
 
 JSMasker is a flexible JavaScript module that masks sensitive properties in objects and arrays by replacing them with customizable masks. It can be used in both Node.js and browser environments.
@@ -20,7 +15,6 @@ JSMasker is a flexible JavaScript module that masks sensitive properties in obje
 - [Configuration Options](#configuration-options)
 - [Examples](#examples)
 - [Migration](#migration)
-- [Compatibility](#compatibility)
 - [Building and Publishing](#building-and-publishing)
 - [Contributing](#contributing)
 - [License](#license)
@@ -78,23 +72,6 @@ const masked = maskObject({ password: 'secret' })
   console.log(masked)
 </script>
 ```
-
-### Webpack (summary)
-
-Webpack 5 handles ESM by default. No special configuration is required to use JSMasker.
-
-```js
-// In your app code
-import maskObject from 'jsmasker'
-
-const masked = maskObject({ secret: 'value' })
-```
-
-Notes:
-- Works with both ESM and CommonJS source files. For CommonJS, use `const maskObject = require('jsmasker')`.
-- Avoid deep imports like `jsmasker/src/*`; use the package entry `jsmasker` so Webpack resolves the published ESM/CJS correctly.
-- For legacy browser targets, configure your transpiler (Babel/SWC) as usual; JSMasker ships modern syntax but is small and tree-shakeable.
-- If you need a global in a plain HTML page, use the UMD build: `dist/jsmasker.umd.min.js` (global `JSMasker`).
 
 ### Masking Objects
 
@@ -384,19 +361,6 @@ This release updates packaging to work seamlessly with modern ESM bundlers (Vite
 
 - Verify:
   - In Vite: import `jsmasker`, build, and confirm no `require(` appears in the output.
-
-## Compatibility
-
-- Node: >= 18 (Node 20 recommended)
-- Module systems: ESM and CommonJS
-- Browser: Modern evergreen browsers
-- Bundlers:
-  - Vite >= 4 (Rollup under the hood)
-  - Rollup >= 3
-  - Webpack 5
-- Tree-shaking: Yes (`sideEffects: false`)
-- TypeScript: Declarations bundled (`dist/index.d.ts`)
-
 
 ## Building and Publishing
 
