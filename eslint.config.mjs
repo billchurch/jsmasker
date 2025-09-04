@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url'
 import js from '@eslint/js'
 import n from 'eslint-plugin-n'
 import { FlatCompat } from '@eslint/eslintrc'
+import tsParser from '@typescript-eslint/parser'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -18,12 +20,26 @@ const nodeRecommendedConfig = compat.config({
 })
 
 export default [
-  // Add ignore patterns for test directory if desired
-  {
-    ignores: ['./test/**']
-  },
   js.configs.recommended,
   prettierConfig,
+  // TypeScript support for src/**/*.ts
+  {
+    files: ['src/**/*.ts'],
+    languageOptions: {
+      parser: tsParser
+    },
+    plugins: {
+      '@typescript-eslint': tsPlugin
+    },
+    rules: {
+      // Prefer TS-aware unused vars and allow underscore-prefixed
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { args: 'after-used', argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+      ]
+    }
+  },
   {
     plugins: {
       prettier,
@@ -41,19 +57,6 @@ export default [
       'no-undef': 'off'
     }
   },
-  // Fix for polyfills.js - add CommonJS globals
-  {
-    files: ['src/polyfills.js'],
-    languageOptions: {
-      globals: {
-        module: 'writable',
-        require: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        process: 'readonly'
-      }
-    }
-  },
   // Fix for test files - add CommonJS globals
   {
     files: ['test/**/*.js'],
@@ -65,8 +68,32 @@ export default [
         __filename: 'readonly',
         process: 'readonly'
       }
+    },
+    rules: {
+      // Tests import built artifacts; disable missing-import checks
+      'n/no-missing-import': 'off'
     }
   },
   // Properly include the Node.js plugin's recommended config using the compat utility
   ...nodeRecommendedConfig
+  ,
+  // Re-assert TS overrides after plugin presets (ensure precedence)
+  {
+    files: ['src/**/*.ts'],
+    languageOptions: { parser: tsParser },
+    rules: {
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { args: 'after-used', argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+      ]
+    }
+  },
+  // Re-assert test overrides after plugin presets (ensure precedence)
+  {
+    files: ['test/**/*.js'],
+    rules: {
+      'n/no-missing-import': 'off'
+    }
+  }
 ]

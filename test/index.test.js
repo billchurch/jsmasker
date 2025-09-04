@@ -1,7 +1,7 @@
 'use strict'
 
 import assert from 'assert'
-import maskObject from '../src/index.js' // Note the explicit .js extension
+import maskObject from '../dist/index.esm.js'
 // Test case 1: Basic functionality
 const testObj1 = {
   username: 'penelope',

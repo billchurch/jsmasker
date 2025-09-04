@@ -1,6 +1,6 @@
 {
   "name": "Debian Bullseye Node.js DevContainer",
-  "image": "mcr.microsoft.com/vscode/devcontainers/base:bullseye",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22"
