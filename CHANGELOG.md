@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/billchurch/jsmasker/compare/v1.7.0...v2.0.0) (2025-09-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **core,build:** 
+
+### Features
+
+* **core,build:** migrate to Vite + TS; ESM-only; multi-format outputs ([f2f3d08](https://github.com/billchurch/jsmasker/commit/f2f3d08669dca7390b2ec857ba2ad47f700ac67a))
+
 ## [1.7.0](https://github.com/billchurch/jsmasker/compare/v1.6.0...v1.7.0) (2025-03-04)
 
 
